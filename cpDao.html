@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste de API</title>
+</head>
+<body>
+    <h1>Lista de Clientes</h1>
+    <button id="listarClientesButton">Listar Clientes</button>
+    <table id="tabelaClientes">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Idade</th>
+                <th>Saldo</th>
+                <th>Data de Cadastro</th>
+            </tr>
+        </thead>
+        <tbody id="corpoTabelaClientes">
+            
+        </tbody>
+    </table>
+    
+    <script>
+        document.getElementById('listarClientesButton').addEventListener('click', listarClientes);
+
+        function listarClientes() {
+            const url = "http://127.0.0.1:5000/cliente";
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const corpoTabela = document.getElementById('corpoTabelaClientes');
+                    corpoTabela.innerHTML = ''; // Limpa os dados anteriores
+
+                    data.forEach(cliente => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${cliente.id}</td>
+                            <td>${cliente.nome}</td>
+                            <td>${cliente.idade}</td>
+                            <td>${cliente.saldo}</td>
+                            <td>${cliente.data_cadastro}</td>
+                        `;
+                        corpoTabela.appendChild(row);
+                    });
+                })
+                .catch(error => console.error(error));
+        }
+    </script>
+</body>
+</html>
